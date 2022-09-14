@@ -9,6 +9,7 @@ class BookForm(forms.ModelForm):
         model = Book
         fields = '__all__'
 
+    # returns the book in lowercase
     def clean_name_book_rus(self):
         return self.cleaned_data['name_book_rus'].lower()
 
