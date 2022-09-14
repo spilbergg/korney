@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+{% block title_page %}
+    <title>{{ title }}</title>
+{% endblock title_page %}
+	{% block css_style_link %}
+	<link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/person.css' %}">
+	{% endblock css_style_link %}
+</head>
+<body>
+
+<ul class=""></ul>
+<header id = "header">
+
+    <a href="{% url 'lib:main_page' %}"><img src="{% static 'images/background_main_page.jpg' %}" alt="" class = "header__logo"></a>
+
+
+    <block>Библиотека</block>
+
+</header>
+
+<ul id="menu">
+    <li><a href="{% url 'lib:page_index' %}">добавление книги</a></li>
+    <li><a href="{% url 'lib:image_add' %}">добавление кратинки к книге</a></li>
+    <li><a href="{% url 'lib:add_reader' %}">добавление пользователя</a></li>
+    <li><a href="{% url 'lib:add_author' %}">добавление автора</a></li>
+    <li><a href="{% url 'lib:give_book' %}">выдача книги</a></li>
+    <li><a href="{% url 'lib:return_book' %}">прием книги</a></li>
+
+    <li><a href="{% url 'lib:readers_page'%}">список читателей</a></li>
+
+
+{#    <li><a href="">поиск книги</a></li>#}
+
+	<form action="{% url 'lib:search' %}" method="get">
+		{% csrf_token %}
+		<input size="4" type="search" name="search">
+		<button >искать</button>
+	</form>
+
+</ul>
+
+{% block content %}
+<div>
+	<table>
+		<tr>
+			<th>Название книги</th>
+			<th>Название жанра</th>
+			<th>Цена за книгу</th>
+			<th>Количество</th>
+			<th>Выдано</th>
+			<th>Обложка</th>
+		</tr>
+		{% for f in page_obj %}
+		<tr>
+			<td><a href=" {%  url 'lib:get_discription_book' f.pk %}">{{ f.name_book_rus.capitalize }}</a></td>
+			<td>{% for g in f.genre_book.all %}
+			{{ g.name_genre }}
+			{% endfor %}</td>
+			<td>{{ f.price_book }}<span> руб</span></td>
+			<td>{{ f.count_book }}</td>
+			<td>{{ f.book_read_person.all|length }}</td>
+			<td class="book">{% for i in f.imagebook_set.all %}
+			{% if i.photo_book.url %}
+			<a href="{{ i.photo_book.url }}"><img height="80" src="{{ i.photo_book.url }}" alt=""></a>
+
+				{% endif %}
+			{% endfor %}</td></tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock content %}
+
+{% block pagina %}
+{% include 'pagination.html' %}
+{% endblock pagina %}
+
+</body>
+</html>

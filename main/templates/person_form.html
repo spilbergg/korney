@@ -1,0 +1,15 @@
+{% extends 'main_page.html' %}
+{% block title_page %}
+    <title>{{ title }}</title>
+{% endblock title_page %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>ok</button>
+</form>
+{% endblock %}
+{% block pagina %}
+{% endblock pagina %}

@@ -1,0 +1,42 @@
+{% extends 'main_page.html'%}
+{% block title_page %}
+    <title>{{ title }}</title>
+{% endblock title_page %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/person.css' %}">
+<main>
+	<div>
+		<table>
+			<tr>
+				<th>Имя</th>
+				<th>Фамилия</th>
+				<th>Дата рождения</th>
+				<th>Емейл</th>
+				<th>Адресс проживания</th>
+				<th>Книги</th>
+			</tr>
+			{% for f in page_obj %}
+			<td>{{ f.first_name }}</td>
+			<td>{{ f.last_name }}</td>
+			<td>{{ f.date_birthday }}</td>
+			<td>{{ f.email }}</td>
+			<td>{{ f.residential_address }}</td>
+
+			<td>
+				{% for i in f.book_set.all %}
+						{{ i.name_book_rus.capitalize }}
+				{% endfor %}
+			</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</main>
+
+
+{% endblock %}
+
+{% block pagina %}
+	{% include 'pagination.html' %}
+{% endblock pagina %}

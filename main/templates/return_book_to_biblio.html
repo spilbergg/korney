@@ -1,0 +1,16 @@
+{% extends 'main_page.html' %}
+{% block title_page %}
+    <title>{{ title }}</title>
+{% endblock title_page %}
+{% block content %}
+<form action="" method="POST">
+    {%csrf_token%}
+    <select name='return_book_to_biblio' size="6" multiple>
+    {% for f in books %}
+    	<option>{{ f.name_book_rus.capitalize }}</option>
+    {% endfor %}
+    </select>
+    <button>ok</button>
+</form>
+{{error}}
+{% endblock %}

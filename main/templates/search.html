@@ -1,0 +1,25 @@
+{% extends 'main_page.html' %}
+
+{% block title_page %}
+    <title>{{ title }}</title>
+{% endblock title_page %}
+
+{% block content %}
+	{% if book %}
+ {% for g in book %}
+	{{g.name_book_rus.capitalize}}
+	{% for i in book.genre_book.all %}
+		{{i.name_genre}}
+	{% endfor %}
+		{{g.count_book}}
+		{{g.price_one_day_period}}
+
+{% endfor %}
+		{% else %}
+		<p>Поиск не дал результата</p>
+	{% endif %}
+{% endblock %}
+
+
+
+

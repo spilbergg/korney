@@ -1,0 +1,49 @@
+{% extends 'main_page.html' %}
+
+{% block content %}
+<body>
+<form class="add__book" action="{% url 'lib:page_index' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <span>Обложка книги<input type="file" name="image"></span><br>
+    <button style="margin-left: 10px; margin-top: 10px" >отправить</button>
+</form>
+<div class="popup__genre">
+	<a class="popup__genre__click" href="#popup">+</a>
+</div>
+<div id="popup" class="popup">
+	<div class="popup__body">
+		<div class="popup__context">
+			<a href="" class="popup__close">X</a>
+			<div>Добавить жанр</div>
+				<form action="{% url 'lib:book_genre_popup_add' %}" method="post">
+					{% csrf_token %}
+					{{ form_genre.as_p }}
+					<button>Ok</button>
+				</form>
+		</div>
+	</div>
+</div>
+
+<div class="popup__authors">
+	<a class="popup__authors__click" href="#popup1">+</a>
+</div>
+<div id="popup1" >
+	<div class="popup__body">
+		<div class="popup__context">
+			<a href="" class="popup__close">X</a>
+			<div>Добавить автора</div>
+				<div>
+				<form action="{% url 'lib:book_author_popup_add' %}" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					{{ form_authors.as_p }}
+					<button>Ok</button>
+				</form>
+				</div>
+		</div>
+	</div>
+</div>
+</body>
+{% endblock %}
+{% block pagina %}
+{% endblock pagina %}

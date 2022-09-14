@@ -1,0 +1,15 @@
+{% extends 'main_page.html' %}
+
+{% block content %}
+<form action="" method="POST">
+		{% csrf_token %}
+		<span>Поиск по имени</span><input size="10" type="search" name="search_reader">
+		<button >искать</button>
+	</form>
+{% for f in readers %}
+<div>
+<a href="{% url 'lib:give_book_to_person' f.pk %}">{{f.first_name}}</a>
+{{f.first_name}}
+</div>
+{% endfor %}
+{% endblock %}

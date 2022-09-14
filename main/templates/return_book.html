@@ -1,0 +1,9 @@
+{% extends 'main_page.html' %}
+{% block title_page %}
+    <title>{{ title }}</title>
+{% endblock title_page %}
+{% block content %}
+		{% for i in names %}
+			<a href="{% url 'lib:return_book_to_biblio' i.pk %}">{{ i.first_name.title }} {{ i.last_name.title }}</a><br>
+		{% endfor %}
+{% endblock content %}
