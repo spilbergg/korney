@@ -78,3 +78,13 @@ class PersonReader(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
+class NewAdmin(models.Model):
+    name = models.CharField(max_length=127, verbose_name='Name')
+    last_name = models.CharField(max_length=127, verbose_name='Last name')
+    age = models.PositiveIntegerField(validators=MaxValueValidator(99))
+    email = models.EmailField(max_length=127, verbose_name='Email')
+
+    def __str__(self):
+        return f'{self.name} {self.last_name}'
