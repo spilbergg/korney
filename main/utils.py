@@ -2,6 +2,9 @@ from .models import Book
 
 
 def discont(book_set):
+    """
+    Function processing the full cost
+    """
     full_price = 0
     if len(book_set) == 1:
         for f in book_set:
