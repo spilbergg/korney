@@ -13,9 +13,7 @@ class Book(models.Model):
                                      decimal_places=2,
                                      verbose_name='Цена')
     count_book = models.IntegerField(verbose_name='Количество')
-    all_author_book = models.ManyToManyField(
-        'Author',
-        verbose_name='Все авторы книги')
+    all_author_book = models.ManyToManyField('Author', verbose_name='Все авторы книги')
     price_one_day_period = models.DecimalField(max_digits=5,
                                                decimal_places=2,
                                                verbose_name='Стоимость одного дня')
@@ -80,10 +78,10 @@ class PersonReader(models.Model):
         return self.first_name
 
 
-class NewAdmin(models.Model):
+class NewPerson(models.Model):
     name = models.CharField(max_length=127, verbose_name='Name')
     last_name = models.CharField(max_length=127, verbose_name='Last name')
-    age = models.PositiveIntegerField(validators=MaxValueValidator(99))
+    age = models.PositiveIntegerField(validators=[MaxValueValidator(99)])
     email = models.EmailField(max_length=127, verbose_name='Email')
 
     def __str__(self):
