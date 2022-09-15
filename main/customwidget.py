@@ -2,12 +2,11 @@ from datetime import date
 
 from django import forms
 
-"""Widget for beautiful birthday picker
-
-"""
-
 
 class DateSelectorWidget(forms.MultiWidget):
+    """
+    Widget for beautiful birthday picker
+    """
     def __init__(self, attrs=None):
         days = [(day, day) for day in range(1, 32)]
         months = [(month, month) for month in range(1, 13)]
