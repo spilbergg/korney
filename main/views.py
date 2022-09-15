@@ -1,12 +1,13 @@
 import datetime
 
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
 from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm
-from .models import Book, ImageBook, PersonReader
+from .models import Book, ImageBook, NewPerson, PersonReader
 from .utils import discont
 
 
@@ -262,3 +263,27 @@ def return_book_to_biblio(request, pk):
                 reader.book_set.remove(book)
                 print(book)
     return render(request, 'return_book_to_biblio.html', context)
+
+
+# Simple implementation CRUD
+def get_person(request):
+    """cRud"""
+    person = NewPerson.objects.all()
+    if not person:
+        return HttpResponse("Результат не найден")
+    return render(request, 'crud/read', {'person': person})
+
+
+def create_person(request):
+    """Crud"""
+    pass
+
+
+def update_person(request):
+    """crUd"""
+    pass
+
+
+def delete_person(request):
+    """cruD"""
+    pass
