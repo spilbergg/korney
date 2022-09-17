@@ -5,18 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<p>
-    {% for i in person %}
-        <p>
-            {{i.name}}
-            {{i.last_name}}
-            {{i.email}}
-            {{i.age}}
-        </p>
+    {% for i in persons %}
+        <a href="{% url 'lib:get_detail_person' i.id %}"><p><h1>{{ i }}</h1></a>
+        <a href="{% url 'lib:create_person'  %}">create</a>
+        <a href="{% url 'lib:update_person' i.id %}">update</a>
+        <a href="{% url 'lib:delete_person' i.id %}">delete</a></p>
     {% endfor %}
-</p>
+
 </body>
 </html>
 
-{%  %}
-{% endfor %}
