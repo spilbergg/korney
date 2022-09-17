@@ -1,12 +1,12 @@
 import datetime
 
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, Http404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
-from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm
+from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm, NewPersonForm
 from .models import Book, ImageBook, NewPerson, PersonReader
 from .utils import discont
 
@@ -268,22 +268,63 @@ def return_book_to_biblio(request, pk):
 # Simple implementation CRUD
 def get_person(request):
     """cRud"""
-    person = NewPerson.objects.all()
-    if not person:
-        return HttpResponse("Результат не найден")
-    return render(request, 'crud/read', {'person': person})
+    persons = NewPerson.objects.all()
+    if not persons:
+        # return redirect('lib:create_person')
+        return render(request, 'crud/create.html')
+    return render(request, 'crud/read.html', {'persons': persons})
+
+
+def get_detail_person(request, id):
+    try:
+        data = NewPerson.objects.get(id=id)
+    except NewPerson.DoesNotExist:
+        raise Http404('Person not found')
+    return render(request, 'crud/detail_person.html', {'data': data})
 
 
 def create_person(request):
     """Crud"""
-    pass
+    if request.method == "POST":
+        form = NewPersonForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lib:get_person')
+    else:
+        form = NewPersonForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'crud/create.html', context)
 
 
-def update_person(request):
+def update_person(request, id):
     """crUd"""
-    pass
+    try:
+        person = get_object_or_404(NewPerson, id=id)
+    except Exception:
+        raise Http404('Person not found')
+    if request.method == "POST":
+        form = NewPersonForm(request.POST, instance=person)
+        if form.is_valid():
+            form.save()
+            return redirect('lib:get_person')
+    else:
+        form = NewPersonForm(instance=person)
+        context = {
+            'form': form
+        }
+        return render(request, 'crud/update.html', context)
 
 
-def delete_person(request):
+def delete_person(request, id):
     """cruD"""
-    pass
+    try:
+        person = get_object_or_404(NewPerson, id=id)
+    except Exception:
+        raise Http404('Person not found')
+    if request.method == 'POST':
+        person.delete()
+        return redirect('lib:get_person')
+    else:
+        return render(request, 'crud/delete.html')
