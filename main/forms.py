@@ -1,7 +1,8 @@
 from django import forms
+from django.forms import ModelForm
 
 from .customwidget import DateSelectorWidget
-from .models import Author, Book, Genre, ImageBook, PersonReader
+from .models import Author, Book, Genre, ImageBook, NewPerson, PersonReader
 
 
 class BookForm(forms.ModelForm):
@@ -46,4 +47,10 @@ class PersonReaderForm(forms.ModelForm):
 class Author_form(forms.ModelForm):
     class Meta:
         model = Author
+        fields = '__all__'
+
+
+class NewPersonForm(ModelForm):
+    class Meta:
+        model = NewPerson
         fields = '__all__'
