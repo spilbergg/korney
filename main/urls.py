@@ -5,7 +5,7 @@ from .views import (page_index, image_add, add_reader, add_author,
                     BookListView, GetDiscriptionBook, search_result,
                     give_book, give_book_to_person, return_book, return_book_to_biblio,
                     get_person, create_person, update_person, delete_person,
-                    main_page, get_detail_person)
+                    main_page, get_detail_person, get_car, create_car)
 
 app_name = 'lib'
 
@@ -30,5 +30,7 @@ urlpatterns = [
     path('get_person/create_person/', create_person, name='create_person'),
     path('get_person/update_person/<int:id>/', update_person, name='update_person'),
     path('get_person/delete_person/<int:id>/', delete_person, name='delete_person'),
+    path('get_car/', get_car, name='get_car'),
+    path('get_car/create', create_car, name='create_car'),
 
 ]
