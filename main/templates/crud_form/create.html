@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="align: center">
+<form action="{% url 'lib:create_car' %}" method="post">
+    {% csrf_token %}
+    <p>Marka: <input type="text" value="" name="model"></p>
+    <p>Description: <input type="text" value="" name="description"></p>
+    <p>Color: <input type="text" value=""  name="color"></p>
+    <p>Price: <input type="number" value="" name="price"></p>
+    <p><input type="submit" value="Create"></p>
+</form>
+</body>
+</html>

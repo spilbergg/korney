@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="{% url 'lib:create_car' %}">create</a>
+        {% for i in cars %}<br><br>
+            {{ i.model }}
+            {{ i.description }}
+            {{ i.color }}
+            {{ i.price }}
+        {% endfor %}
+</body>
+</html>
