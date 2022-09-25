@@ -6,8 +6,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
-from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm, NewPersonForm
-from .models import Book, ImageBook, NewPerson, PersonReader
+from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm, \
+    NewPersonForm
+from .models import Book, ImageBook, NewPerson, PersonReader, Auto
 from .utils import discont
 
 
@@ -328,3 +329,30 @@ def delete_person(request, id):
         return redirect('lib:get_person')
     else:
         return render(request, 'crud/delete.html')
+
+
+# CRUD  from Auto
+def get_car(request):
+    cars = Auto.objects.all()
+    return render(request, 'crud_form/view.html', {'cars': cars})
+
+
+def create_car(request):
+    if request.method == 'POST':
+        model = request.POST.get('model')
+        description = request.POST.get('description')
+        color = request.POST.get('color')
+        price = request.POST.get('price')
+        if model and description and color:
+            Auto.objects.create(
+                model=model,
+                description=description,
+                color=color,
+                price=price
+            )
+            return redirect('lib:get_car')
+        else:
+            return HttpResponse('<h1>Данные не корректны,'
+                                ' пробуйте вводить сново если с первого '
+                                'раза не можете </h1>')
+    return render(request, 'crud_form/create.html')
