@@ -86,3 +86,13 @@ class NewPerson(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.last_name}'
+
+
+class Auto(models.Model):
+    model = models.CharField(max_length=127, verbose_name='marka')
+    description = models.TextField(max_length=512, verbose_name='opisanie')
+    color = models.CharField(max_length=127, verbose_name='color')
+    price = models.IntegerField(verbose_name='cena', default=0)
+
+    def __str__(self):
+        return self.model

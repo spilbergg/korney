@@ -54,3 +54,5 @@ class NewPersonForm(ModelForm):
     class Meta:
         model = NewPerson
         fields = '__all__'
+
+
