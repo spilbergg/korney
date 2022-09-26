@@ -7,11 +7,13 @@
 <body style="align: center">
 <form action="{% url 'lib:create_car' %}" method="post">
     {% csrf_token %}
-    <p>Marka: <input type="text" value="" name="model"></p>
-    <p>Description: <input type="text" value="" name="description"></p>
-    <p>Color: <input type="text" value=""  name="color"></p>
-    <p>Price: <input type="number" value="" name="price"></p>
-    <p><input type="submit" value="Create"></p>
+    <label for="model"> Model: <input type="text" id="model" name="model"></label><br>
+    <label for="description">Description: <input type="text" id="description" name="description"></label><br>
+    <label for="color">Color: <input type="text" id="color"  name="color"></label><br>
+    <label for="price">Price: <input type="number" id="price" name="price"></label><br>
+    <label for="categoria">categoria: <input type="text" id="categoria" name="categoria"></label><br>
+    <label for="shop">shop: <input type="text" id="shop" name="shop"></label><br>
+    <label><input type="submit" value="Create"></label>
 </form>
 </body>
 </html>

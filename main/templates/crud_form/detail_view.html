@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+        <p>{{ car.model }}</p>
+        <p>{{ car.description }}</p>
+        <p>{{ car.color }}</p>
+        <p>{{ car.price }}</p>
+        <p>{{ car.categoria }}</p>
+        {% for i in car.shop.all %}
+        <p>{{ i.name }}</p>
+        {% endfor %}
+
+
+</body>
+</html>

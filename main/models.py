@@ -93,6 +93,21 @@ class Auto(models.Model):
     description = models.TextField(max_length=512, verbose_name='opisanie')
     color = models.CharField(max_length=127, verbose_name='color')
     price = models.IntegerField(verbose_name='cena', default=0)
+    categoria = models.ForeignKey('CategorAuto',
+                                  on_delete=models.CASCADE,
+                                  verbose_name='Categoria')
+    shop = models.ManyToManyField('AutoShop', verbose_name='magazin')
 
     def __str__(self):
         return self.model
+
+
+class CategorAuto(models.Model):
+    title = models.CharField(max_length=127, verbose_name='Categorya')
+
+    def __str__(self):
+        return self.title
+
+
+class AutoShop(models.Model):
+    name = models.CharField('Magazin', max_length=127)
