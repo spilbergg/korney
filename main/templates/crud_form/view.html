@@ -5,12 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<a href="{% url 'lib:create_car' %}">create</a>
+<a href="{% url 'lib:create_car' %}"><b><h1>create</h1></b></a>
         {% for i in cars %}<br><br>
-            {{ i.model }}
-            {{ i.description }}
-            {{ i.color }}
-            {{ i.price }}
+            <a href="{% url 'lib:detail_view' i.id %}"><h2>{{ i.model }}</h2> </a>
+            <a href="{% url 'lib:delete_car' i.id %}">delete</a>
+            <a href="{% url 'lib:update_car' i.id %}">update</a>
         {% endfor %}
 </body>
 </html>

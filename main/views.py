@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 
 from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm, \
     NewPersonForm
-from .models import Book, ImageBook, NewPerson, PersonReader, Auto
+from .models import Book, ImageBook, NewPerson, PersonReader, Auto, CategorAuto, AutoShop
 from .utils import discont
 
 
@@ -271,8 +271,8 @@ def get_person(request):
     """cRud"""
     persons = NewPerson.objects.all()
     if not persons:
-        # return redirect('lib:create_person')
-        return render(request, 'crud/create.html')
+        return redirect('lib:create_person')
+        # return render(request, 'crud/create.html')
     return render(request, 'crud/read.html', {'persons': persons})
 
 
@@ -337,22 +337,61 @@ def get_car(request):
     return render(request, 'crud_form/view.html', {'cars': cars})
 
 
+def detail_car(request, id):
+    car = Auto.objects.get(id=id)
+    return render(request, 'crud_form/detail_view.html', {'car': car})
+
+
 def create_car(request):
     if request.method == 'POST':
         model = request.POST.get('model')
         description = request.POST.get('description')
         color = request.POST.get('color')
         price = request.POST.get('price')
-        if model and description and color:
-            Auto.objects.create(
+        categoria = request.POST.get('categoria')
+        shop = request.POST.get('shop')
+        if model and description and color and categoria and shop:
+            try:
+                categor = CategorAuto.objects.get(title=categoria)
+            except:
+                categor = CategorAuto.objects.create(title=categoria)
+            auto = Auto.objects.create(
                 model=model,
                 description=description,
                 color=color,
-                price=price
+                price=price,
+                categoria_id=categor.id
             )
+            try:
+                auto.shop.add(AutoShop.objects.get(name=shop))
+            except:
+                AutoShop.objects.create(name=shop)
             return redirect('lib:get_car')
         else:
             return HttpResponse('<h1>Данные не корректны,'
                                 ' пробуйте вводить сново если с первого '
                                 'раза не можете </h1>')
     return render(request, 'crud_form/create.html')
+
+
+def update_car(request, id):
+    car = Auto.objects.get(id=id)
+    if request.method == 'POST':
+        car.model = request.POST.get('model')
+        car.description = request.POST.get('description')
+        car.color = request.POST.get('color')
+        car.price = request.POST.get('price')
+        car.categoria.title = request.POST.get('categoria')
+        for i in car.shop.all():
+            i.name = request.POST.get('shop')
+        if car.model and car.description and car.color and car.categoria and car.shop:
+            car.save()
+        return redirect('lib:get_car')
+    return render(request, 'crud_form/update.html', {'car': car})
+
+
+
+def delete_car(request, id):
+    auto = Auto.objects.get(id=id)
+    auto.delete()
+    return redirect('lib:get_car')
