@@ -6,13 +6,13 @@
 </head>
 <body>
 
-        <p>{{ car.model }}</p>
-        <p>{{ car.description }}</p>
-        <p>{{ car.color }}</p>
-        <p>{{ car.price }}</p>
-        <p>{{ car.categoria }}</p>
+        <p>марка {{ car.model }}</p>
+        <p>описание {{ car.description }}</p>
+        <p>цвет {{ car.color }}</p>
+        <p>цена {{ car.price }}</p>
+        <p>категория {{ car.categoria }}</p>
         {% for i in car.shop.all %}
-        <p>{{ i.name }}</p>
+        <p>Магазин {{ i.name }}</p>
         {% endfor %}
 
 

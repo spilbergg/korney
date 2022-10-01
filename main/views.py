@@ -365,7 +365,7 @@ def create_car(request):
             try:
                 auto.shop.add(AutoShop.objects.get(name=shop))
             except:
-                AutoShop.objects.create(name=shop)
+                AutoShop.name.create(name=shop)
             return redirect('lib:get_car')
         else:
             return HttpResponse('<h1>Данные не корректны,'
@@ -376,19 +376,23 @@ def create_car(request):
 
 def update_car(request, id):
     car = Auto.objects.get(id=id)
+    cat = CategorAuto.objects.all()
+    shop = AutoShop.objects.all()
     if request.method == 'POST':
         car.model = request.POST.get('model')
         car.description = request.POST.get('description')
         car.color = request.POST.get('color')
         car.price = request.POST.get('price')
-        car.categoria.title = request.POST.get('categoria')
-        for i in car.shop.all():
-            i.name = request.POST.get('shop')
+        for x in [x.title for x in cat]:
+            if x == car.categoria.title:
+                id_title = CategorAuto.objects.get(title=request.POST.get('categoria'))
+                car.categoria_id = id_title.id
+        for i in request.POST.getlist('shop'):
+            car.shop.add(AutoShop.objects.get(name=i))
         if car.model and car.description and car.color and car.categoria and car.shop:
             car.save()
         return redirect('lib:get_car')
-    return render(request, 'crud_form/update.html', {'car': car})
-
+    return render(request, 'crud_form/update.html', {'car': car, 'cat': cat, 'shop': shop})
 
 
 def delete_car(request, id):

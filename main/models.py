@@ -111,3 +111,6 @@ class CategorAuto(models.Model):
 
 class AutoShop(models.Model):
     name = models.CharField('Magazin', max_length=127)
+
+    def __str__(self):
+        return self.name

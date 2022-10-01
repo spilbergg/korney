@@ -7,7 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('lib/', include('main.urls')),
     path('', include('main.urls')),
-
+    path('ajax/', include('ajax.urls')),
 ]
 
 if settings.DEBUG:
