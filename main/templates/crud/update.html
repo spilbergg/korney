@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<meta charset="UTF-8">
+	<title>Title</title>
 </head>
 <body>
-<form action="" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit">
+<form action="{% url 'lib:update_car' car.id %}" method="post">
+	{% csrf_token %}
+	<label for="model"> Model: <input type="text" value="{{car.model}}" id="model" name="model"></label><br>
+	<label for="description">Description: <input type="text" value="{{car.description}}" id="description"
+												 name="description"></label><br>
+	<label for="color">Color: <input type="text" value="{{car.color}}" id="color" name="color"></label><br>
+	<label for="price">Price: <input type="number" value="{{car.price}}" id="price" name="price"></label><br>
+	{% for i in cat %}
+	<label for="categoria">categoria: {{i}}<input type="radio" value="{{i}}" id="categoria" name="categoria"></label><br>
+	{% endfor %}
+	{% for i in shop %}
+	<label for="shop">shop: {{ i }} <input type="checkbox" value="{{ i }}" id="shop" name="shop"></label><br>
+	{% endfor %}
+	<label><input type="submit" value="Update"></label>
 </form>
 </body>
 </html>

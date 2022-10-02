@@ -9,5 +9,9 @@
     <h3>Last Name: {{ data.last_name }}</h3>
     <h3>Age: {{ data.age }}</h3>
     <h3>Email: {{ data.email }}</h3>
+    <h3>course: {{data.course}}</h3>
+    {% for i in data.disciplines.all %}
+    <h3>disciplina: {{i}}</h3>
+    {% endfor %}
 </body>
 </html>

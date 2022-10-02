@@ -1,8 +1,9 @@
 from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.forms import ModelForm
 
 from .customwidget import DateSelectorWidget
-from .models import Author, Book, Genre, ImageBook, NewPerson, PersonReader
+from .models import Author, Book, Genre, ImageBook, NewPerson, PersonReader, PersonCourse, PersonDisciplines
 
 
 class BookForm(forms.ModelForm):
@@ -50,9 +51,36 @@ class Author_form(forms.ModelForm):
         fields = '__all__'
 
 
-class NewPersonForm(ModelForm):
+"""
+crud ModelForm
+"""
+class NewPersonModelForm(ModelForm):
     class Meta:
         model = NewPerson
         fields = '__all__'
+        widgets = {
+            'disciplines': forms.CheckboxSelectMultiple()
+        }
 
 
+"""
+crud Form
+"""
+class NewPersonForm(forms.Form):
+    name = forms.CharField(max_length=127)
+    last_name = forms.CharField(max_length=127)
+    age = forms.IntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)])
+    email = forms.EmailField(max_length=127)
+    disciplines = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+                                                 queryset=PersonDisciplines.objects.all())
+    course = forms.ModelChoiceField(widget=forms.Select(), queryset=PersonCourse.objects.all())
+
+    def save(self):
+        person = NewPerson.objects.create(name=self.cleaned_data['name'],
+                                     last_name=self.cleaned_data['last_name'],
+                                     age=self.cleaned_data['age'],
+                                     email=self.cleaned_data['email'],
+                                     course_id=self.cleaned_data['course'].id)
+        for i in self.cleaned_data['disciplines']:
+            person.disciplines.add(i)
+        return person

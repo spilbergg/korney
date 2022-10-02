@@ -78,16 +78,38 @@ class PersonReader(models.Model):
         return self.first_name
 
 
+"""
+crud 
+"""
 class NewPerson(models.Model):
     name = models.CharField(max_length=127, verbose_name='Name')
     last_name = models.CharField(max_length=127, verbose_name='Last name')
     age = models.PositiveIntegerField(validators=[MaxValueValidator(99)])
     email = models.EmailField(max_length=127, verbose_name='Email')
+    disciplines = models.ManyToManyField('PersonDisciplines', verbose_name='дисциплина')
+    course = models.ForeignKey('PersonCourse', on_delete=models.CASCADE, verbose_name='курс')
 
     def __str__(self):
         return f'{self.name} {self.last_name}'
 
 
+class PersonCourse(models.Model):
+    name = models.CharField(max_length=127, verbose_name='На каком курсе учится')
+
+    def __str__(self):
+        return self.name
+
+
+class PersonDisciplines(models.Model):
+    name = models.CharField(max_length=127, verbose_name='Название дисциплины')
+
+    def __str__(self):
+        return self.name
+
+
+"""
+crud 
+"""
 class Auto(models.Model):
     model = models.CharField(max_length=127, verbose_name='marka')
     description = models.TextField(max_length=512, verbose_name='opisanie')
