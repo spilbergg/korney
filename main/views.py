@@ -7,7 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
 from .forms import Author_form, BookFormGenre, BookFormAuthors, BookForm, ImageBookForm, PersonReaderForm, \
-    NewPersonForm
+    NewPersonModelForm, NewPersonForm
 from .models import Book, ImageBook, NewPerson, PersonReader, Auto, CategorAuto, AutoShop
 from .utils import discont
 
@@ -266,14 +266,14 @@ def return_book_to_biblio(request, pk):
     return render(request, 'return_book_to_biblio.html', context)
 
 
-# Simple implementation CRUD
+# Simple implementation CRUD with forms.ModelForm
 def get_person(request):
     """cRud"""
     persons = NewPerson.objects.all()
     if not persons:
         return redirect('lib:create_person')
         # return render(request, 'crud/create.html')
-    return render(request, 'crud/read.html', {'persons': persons})
+    return render(request, 'crud_modelform/read.html', {'persons': persons})
 
 
 def get_detail_person(request, id):
@@ -281,22 +281,25 @@ def get_detail_person(request, id):
         data = NewPerson.objects.get(id=id)
     except NewPerson.DoesNotExist:
         raise Http404('Person not found')
-    return render(request, 'crud/detail_person.html', {'data': data})
+    return render(request, 'crud_modelform/detail_person.html', {'data': data})
 
 
 def create_person(request):
     """Crud"""
     if request.method == "POST":
-        form = NewPersonForm(request.POST)
+        form = NewPersonModelForm(request.POST)
+        print(form.data)
         if form.is_valid():
+            print(form.cleaned_data)
             form.save()
             return redirect('lib:get_person')
     else:
-        form = NewPersonForm()
+        form = NewPersonModelForm()
         context = {
             'form': form
         }
-        return render(request, 'crud/create.html', context)
+        return render(request, 'crud_modelform/create.html', context)
+    return redirect('lib:get_person')
 
 
 def update_person(request, id):
@@ -306,16 +309,16 @@ def update_person(request, id):
     except Exception:
         raise Http404('Person not found')
     if request.method == "POST":
-        form = NewPersonForm(request.POST, instance=person)
+        form = NewPersonModelForm(request.POST, instance=person)
         if form.is_valid():
             form.save()
             return redirect('lib:get_person')
     else:
-        form = NewPersonForm(instance=person)
+        form = NewPersonModelForm(instance=person)
         context = {
             'form': form
         }
-        return render(request, 'crud/update.html', context)
+        return render(request, 'crud_modelform/update.html', context)
 
 
 def delete_person(request, id):
@@ -328,18 +331,18 @@ def delete_person(request, id):
         person.delete()
         return redirect('lib:get_person')
     else:
-        return render(request, 'crud/delete.html')
+        return render(request, 'crud_modelform/delete.html')
 
 
-# CRUD  from Auto
+# CRUD  from Auto with only input
 def get_car(request):
     cars = Auto.objects.all()
-    return render(request, 'crud_form/view.html', {'cars': cars})
+    return render(request, 'crud/view.html', {'cars': cars})
 
 
 def detail_car(request, id):
     car = Auto.objects.get(id=id)
-    return render(request, 'crud_form/detail_view.html', {'car': car})
+    return render(request, 'crud/detail_view.html', {'car': car})
 
 
 def create_car(request):
@@ -371,7 +374,7 @@ def create_car(request):
             return HttpResponse('<h1>Данные не корректны,'
                                 ' пробуйте вводить сново если с первого '
                                 'раза не можете </h1>')
-    return render(request, 'crud_form/create.html')
+    return render(request, 'crud/create.html')
 
 
 def update_car(request, id):
@@ -392,10 +395,48 @@ def update_car(request, id):
         if car.model and car.description and car.color and car.categoria and car.shop:
             car.save()
         return redirect('lib:get_car')
-    return render(request, 'crud_form/update.html', {'car': car, 'cat': cat, 'shop': shop})
+    return render(request, 'crud/update.html', {'car': car, 'cat': cat, 'shop': shop})
 
 
 def delete_car(request, id):
     auto = Auto.objects.get(id=id)
     auto.delete()
     return redirect('lib:get_car')
+
+
+# crud with forms.Form
+def get_person_form(request):
+    pers = NewPerson.objects.all()
+    return render(request, 'crud_formform/get_person_form.html', {'pers': pers})
+
+
+def get_detail_person_form(request, id):
+    pers = NewPerson.objects.get(id=id)
+    return render(request, 'crud_formform/get_person_detail_form.html', {'pers': pers})
+
+
+def create_form(request):
+    if request.method == 'POST':
+        form = NewPersonForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            print(form.cleaned_data['course'].id)
+            form.save()
+            return redirect('lib:get_person_form')
+    else:
+        form = NewPersonForm()
+        return render(request, 'crud_formform/create_form.html', {'form': form})
+    return redirect('lib:get_person_form')
+
+
+def update_form(request):
+    pass
+
+
+def delete_form(request, id):
+    pers = NewPerson.objects.all()
+    if request.method == 'POST':
+        a = NewPerson.objects.get(id=id)
+        a.delete()
+        return render(request, 'crud_formform/get_person_form.html', {'pers': pers})
+    return redirect('lib:get_person_form.html')
