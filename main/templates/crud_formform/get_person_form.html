@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<form action="{% url 'lib:create_form' %}" method="post">
+	{% csrf_token %}
+	<input type="submit" value="Создать">
+</form>
+
+	{% for i in pers %}
+		<a href="{% url 'lib:get_detail_person_form' i.id %}"><h3>{{ i }}</h3></a>
+	{% endfor %}
+</body>
+</html>
