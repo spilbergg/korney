@@ -69,11 +69,12 @@ crud Form
 class NewPersonForm(forms.Form):
     name = forms.CharField(max_length=127)
     last_name = forms.CharField(max_length=127)
-    age = forms.IntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)])
+    age = forms.IntegerField(validators=[MaxValueValidator(120), MinValueValidator(0)])
     email = forms.EmailField(max_length=127)
     disciplines = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                  queryset=PersonDisciplines.objects.all())
     course = forms.ModelChoiceField(widget=forms.Select,  queryset=PersonCourse.objects.all())
+    person_id = forms.CharField(widget=forms.HiddenInput())
 
     def save(self):
         person = NewPerson.objects.create(name=self.cleaned_data['name'],
@@ -85,12 +86,13 @@ class NewPersonForm(forms.Form):
             person.disciplines.add(i)
         return person
 
-    def update(self, person_id):
-        person = NewPerson.objects.get(id=person_id)
-        person.name = self.cleaned_data['name'],
-        person.last_name = self.cleaned_data['last_name'],
-        person.age = self.cleaned_data['age'],
-        person.email = self.cleaned_data['email'],
-        person.course_id = self.cleaned_data['course'].id,
+    def update(self):
+        person = NewPerson.objects.get(id=self.cleaned_data['person_id'])
+        person.name = self.cleaned_data['name']
+        person.last_name = self.cleaned_data['last_name']
+        person.age = self.cleaned_data['age']
+        person.email = self.cleaned_data['email']
+        person.course_id = self.cleaned_data['course'].id
         person.disciplines.set(self.cleaned_data['disciplines'])
+        person.save()
         return person

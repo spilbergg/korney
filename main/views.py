@@ -435,13 +435,15 @@ def update_form(request, id):
         'age': pers.age,
         'email': pers.email,
         'course': pers.course,
-        'disciplines': pers.disciplines.all
+        'disciplines': pers.disciplines.all,
+        'person_id': pers.id
     }
     form = NewPersonForm(initial=data_form)
     if request.method == 'POST':
+        print(request.POST)
         form = NewPersonForm(request.POST)
         if form.is_valid():
-            form.update(id)
+            form.update()
             return redirect('lib:get_person_form')
     return render(request, 'crud_formform/update_form.html', {'form': form, 'pers': pers})
 
