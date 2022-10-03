@@ -73,7 +73,7 @@ class NewPersonForm(forms.Form):
     email = forms.EmailField(max_length=127)
     disciplines = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                  queryset=PersonDisciplines.objects.all())
-    course = forms.ModelChoiceField(widget=forms.Select(), queryset=PersonCourse.objects.all())
+    course = forms.ModelChoiceField(widget=forms.Select,  queryset=PersonCourse.objects.all())
 
     def save(self):
         person = NewPerson.objects.create(name=self.cleaned_data['name'],
@@ -83,4 +83,14 @@ class NewPersonForm(forms.Form):
                                      course_id=self.cleaned_data['course'].id)
         for i in self.cleaned_data['disciplines']:
             person.disciplines.add(i)
+        return person
+
+    def update(self, person_id):
+        person = NewPerson.objects.get(id=person_id)
+        person.name = self.cleaned_data['name'],
+        person.last_name = self.cleaned_data['last_name'],
+        person.age = self.cleaned_data['age'],
+        person.email = self.cleaned_data['email'],
+        person.course_id = self.cleaned_data['course'].id,
+        person.disciplines.set(self.cleaned_data['disciplines'])
         return person
